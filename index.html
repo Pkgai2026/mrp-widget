@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MRP — Material Requirements Planning</title>
 <!-- Correct Zoho Books Widget SDK -->
-<script src="https://js.zohostatic.com/zohofinance/v1/zf_sdk.js"></script>
+<!-- No SDK needed - direct API calls -->
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -258,54 +258,67 @@ const ACTIVE_CATS = new Set(['all']);
 // ═══════════════════════════════════════════════
 // SDK INIT — Zoho Books Widget SDK (ZFAPPS)
 // ═══════════════════════════════════════════════
-window.onload = function() {
+// ═══════════════════════════════════════════════
+// OAUTH TOKEN MANAGEMENT
+// ═══════════════════════════════════════════════
+const ZOHO_CONFIG = {
+  client_id:     '1000.42CSB7S54TMZLU925QTR48DMUDK07H',
+  client_secret: '023bdfb4124a71e103d1501fc26c50afe60e8c099b',
+  refresh_token: '1000.ca805fc1aafee23545cc1d5ba08a93a8.43f7232cb54e2eaf712f73f9007bd55d',
+  auth_url:      'https://accounts.zoho.in/oauth/v2/token',
+};
+let ACCESS_TOKEN = null;
+let TOKEN_EXPIRY  = 0;
+
+async function getToken() {
+  if (ACCESS_TOKEN && Date.now() < TOKEN_EXPIRY) return ACCESS_TOKEN;
+  const params = new URLSearchParams({
+    refresh_token: ZOHO_CONFIG.refresh_token,
+    client_id:     ZOHO_CONFIG.client_id,
+    client_secret: ZOHO_CONFIG.client_secret,
+    grant_type:    'refresh_token',
+  });
+  const resp = await fetch(ZOHO_CONFIG.auth_url, { method: 'POST', body: params });
+  const data = await resp.json();
+  if (!data.access_token) throw new Error('Token refresh failed: ' + JSON.stringify(data));
+  ACCESS_TOKEN = data.access_token;
+  TOKEN_EXPIRY  = Date.now() + (data.expires_in - 60) * 1000;
+  return ACCESS_TOKEN;
+}
+
+window.onload = async function() {
   setDates();
-  ZFAPPS.extension.init().then(function(app) {
-    App = app;
+  try {
+    document.getElementById('so-load-msg').textContent = 'Authenticating with Zoho...';
+    await getToken();
     document.getElementById('sdk-status').className = 'badge b-green';
     document.getElementById('sdk-status').textContent = 'Connected';
-
-    // Get org info
-    ZFAPPS.get('organization').then(function(data) {
-      const org = data?.organization || data;
-      if (org?.name) {
-        document.getElementById('org-label').textContent = 'Live · ' + org.name + ' · PEIPL & CMS';
-      }
-    }).catch(()=>{});
-
-    // Auto-load SOs
+    document.getElementById('org-label').textContent = 'Live · PEIPL & CMS · PAI KANE GROUP';
     loadSOList();
-  }).catch(function(err) {
+  } catch(err) {
     document.getElementById('sdk-status').className = 'badge b-red';
-    document.getElementById('sdk-status').textContent = 'SDK Error';
-    document.getElementById('so-load-msg').textContent = 'SDK init failed: ' + (err?.message || err);
-    console.error('ZFAPPS init error:', err);
-  });
+    document.getElementById('sdk-status').textContent = 'Auth Error';
+    document.getElementById('so-load-msg').textContent = 'Auth failed: ' + err.message;
+    console.error(err);
+  }
 };
 
 // ═══════════════════════════════════════════════
-// API HELPER — uses ZFAPPS.request with connections
+// API HELPER — direct fetch with OAuth token
 // ═══════════════════════════════════════════════
-async function zRequest(url, method, connection, body) {
+async function zRequest(url, method, _conn, body) {
+  const token = await getToken();
   const opts = {
-    url: url,
     method: method || 'GET',
-    connection_link_name: connection,
+    headers: {
+      'Authorization': 'Zoho-oauthtoken ' + token,
+      'Content-Type':  'application/json',
+    },
   };
-  if (body) {
-    opts.body = { mode: 'raw', raw: JSON.stringify(body) };
-    opts.header = [{ key: 'Content-Type', value: 'application/json' }];
-  }
-  const resp = await ZFAPPS.request(opts);
-  const data = JSON.parse(resp.data.body);
+  if (body) opts.body = JSON.stringify(body);
+  const resp = await fetch(url, opts);
+  const data = await resp.json();
   return data;
-}
-
-function getConn(orgId) {
-  return orgId === PEIPL_ORG ? 'zoho_books_peipl' : 'zoho_books_cms';
-}
-function getInvConn(orgId) {
-  return orgId === PEIPL_ORG ? 'zoho_inventory_peipl' : 'zoho_inventory_cms';
 }
 
 // ═══════════════════════════════════════════════
@@ -456,8 +469,7 @@ async function runMRP() {
     const df    = document.getElementById('date-from').value;
     const dt    = document.getElementById('date-to').value;
 
-    // Call runMRP Deluge custom function via Zoho Books API
-    // Custom functions are called via /books/v3/customfunctions/execute
+    // Call runMRP Deluge custom function
     const payload = {
       function_name: 'runMRP',
       arguments: JSON.stringify({
@@ -467,13 +479,18 @@ async function runMRP() {
       })
     };
 
-    // Try CMS org first (where function is deployed)
     const result = await zRequest(
       `${API_BASE}/books/v3/customfunctions/execute?organization_id=${CMS_ORG}`,
-      'POST', 'zoho_books_cms', payload
+      'POST', null, payload
     );
 
-    const data = result?.response?.result || result?.result || result;
+    // Extract result from response wrapper
+    let data = result;
+    if (result?.response?.result)  data = result.response.result;
+    else if (result?.result)       data = result.result;
+    else if (typeof result?.response === 'string') {
+      try { data = JSON.parse(result.response); } catch(e) {}
+    }
     MRP_DATA = data;
     renderMRPReport(data);
     renderPOs(data);
