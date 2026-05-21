@@ -4,35 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MRP — Material Requirements Planning</title>
-<script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbededAppSDK.min.js"></script>
+<!-- Correct Zoho Books Widget SDK -->
+<script src="https://js.zohostatic.com/books/v1/widgets/zoho_books_widget_sdk.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F7F6F2;--s:#FFF;--s2:#F0EFE9;--s3:#E8E7E0;
-  --bd:#D8D7CF;--bl:#ECEAE2;--t:#1A1A17;--m:#6B6A60;--f:#A09F95;
+  --bg:#F7F6F2;--s:#FFF;--s2:#F0EFE9;--bd:#D8D7CF;--bl:#ECEAE2;
+  --t:#1A1A17;--m:#6B6A60;--f:#A09F95;
   --blue:#1B4FD8;--bbg:#EBF0FD;--bdk:#1240B8;
   --green:#1A6B3A;--gbg:#E6F5EC;
   --amber:#7A4F00;--abg:#FFF3D6;
   --red:#C0302A;--rbg:#FDECEA;
   --purple:#5B3EA8;--pbg:#F0EBFC;
   --teal:#0E6B6B;--tbg:#E3F5F5;
-  --p1:#C0302A;--p1bg:#FDECEA;
-  --p2:#C05C00;--p2bg:#FEF3E6;
-  --p3:#7A6B00;--p3bg:#FEFAE6;
-  --p4:#1A6B3A;--p4bg:#E6F5EC;
+  --p1:#C0302A;--p1bg:#FDECEA;--p2:#C05C00;--p2bg:#FEF3E6;
+  --p3:#7A6B00;--p3bg:#FEFAE6;--p4:#1A6B3A;--p4bg:#E6F5EC;
   --p5:#0E6B6B;--p5bg:#E3F5F5;
   font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
   font-size:13px;color:var(--t);background:var(--bg)
 }
-body{min-height:100vh;overflow-x:hidden}
+body{min-height:100vh}
 .app{display:flex;flex-direction:column;height:100vh}
 .topbar{background:var(--s);border-bottom:1px solid var(--bl);padding:10px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0}
-.topbar-logo{width:28px;height:28px;border-radius:6px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.topbar-logo{width:28px;height:28px;border-radius:6px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:14px}
 .topbar-title{font-size:15px;font-weight:600;letter-spacing:-.3px}
 .topbar-sub{font-size:11px;color:var(--m)}
 .topbar-right{margin-left:auto;display:flex;gap:8px;align-items:center}
-.tabs{background:var(--s);border-bottom:1px solid var(--bl);padding:0 20px;display:flex;gap:0;flex-shrink:0;overflow-x:auto}
-.tab{padding:10px 16px;font-size:13px;cursor:pointer;border-bottom:2.5px solid transparent;color:var(--m);white-space:nowrap;transition:all .15s;font-weight:500}
+.tabs{background:var(--s);border-bottom:1px solid var(--bl);padding:0 20px;display:flex;flex-shrink:0;overflow-x:auto}
+.tab{padding:10px 16px;font-size:13px;cursor:pointer;border-bottom:2.5px solid transparent;color:var(--m);white-space:nowrap;font-weight:500}
 .tab.active{border-bottom-color:var(--blue);color:var(--blue)}
 .tab:hover:not(.active){color:var(--t);background:var(--s2)}
 .main{flex:1;overflow-y:auto;padding:16px 20px}
@@ -42,14 +41,13 @@ body{min-height:100vh;overflow-x:hidden}
 .form-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px}
 .fg{display:flex;flex-direction:column;gap:4px}
 label{font-size:11px;color:var(--m);font-weight:600}
-input,select{border:1px solid var(--bd);border-radius:7px;padding:7px 10px;font-size:13px;font-family:inherit;color:var(--t);background:var(--s);outline:none;min-width:130px;transition:border-color .15s}
+input,select{border:1px solid var(--bd);border-radius:7px;padding:7px 10px;font-size:13px;font-family:inherit;color:var(--t);background:var(--s);outline:none;min-width:130px}
 input:focus,select:focus{border-color:var(--blue)}
-.btn{padding:7px 14px;border-radius:7px;border:1px solid var(--bd);font-size:13px;font-family:inherit;cursor:pointer;font-weight:500;white-space:nowrap;background:var(--s);color:var(--t);transition:all .15s}
+.btn{padding:7px 14px;border-radius:7px;border:1px solid var(--bd);font-size:13px;font-family:inherit;cursor:pointer;font-weight:500;white-space:nowrap;background:var(--s);color:var(--t)}
 .btn:hover{background:var(--s2)}.btn:disabled{opacity:.5;cursor:not-allowed}
 .btn-p{background:var(--blue);color:#fff;border-color:var(--blue)}
 .btn-p:hover:not(:disabled){background:var(--bdk)}
 .btn-sm{padding:4px 10px;font-size:12px}
-.btn-g{background:var(--gbg);color:var(--green);border-color:#B0D9BE}
 .badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:10.5px;font-weight:600;white-space:nowrap}
 .b-blue{background:var(--bbg);color:var(--blue)}.b-green{background:var(--gbg);color:var(--green)}
 .b-amber{background:var(--abg);color:var(--amber)}.b-red{background:var(--rbg);color:var(--red)}
@@ -72,35 +70,26 @@ tr:hover td{background:#FAFAF7}
 .neg{color:var(--red);font-weight:600}.pos{color:var(--green)}
 .mono{font-family:'Consolas',monospace;font-size:11.5px}
 .pbar{height:5px;background:var(--bl);border-radius:3px;overflow:hidden;min-width:50px}
-.pfill{height:100%;border-radius:3px;transition:width .3s}
+.pfill{height:100%;border-radius:3px}
 .pf-g{background:var(--green)}.pf-a{background:#E8A020}.pf-r{background:var(--red)}
-/* SO list */
 .so-list-wrap{border:1px solid var(--bl);border-radius:8px;overflow:hidden}
 .so-list-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--s2);border-bottom:1px solid var(--bl);font-size:12px;font-weight:600}
 .so-list-body{max-height:320px;overflow-y:auto}
-.so-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--bl);cursor:pointer;transition:background .1s}
+.so-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--bl);cursor:pointer}
 .so-row:last-child{border-bottom:none}
 .so-row:hover{background:var(--s2)}.so-row.selected{background:var(--bbg)}
 .so-row input[type=checkbox]{cursor:pointer;width:14px;height:14px;flex-shrink:0;accent-color:var(--blue)}
 .so-row-num{font-weight:600;color:var(--blue);min-width:150px;font-size:12.5px}
 .so-row-cust{color:var(--m);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
-/* Category chips */
 .cat-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.cat-chip{padding:4px 10px;border-radius:20px;font-size:11.5px;font-weight:500;border:1px solid var(--bd);background:var(--s);cursor:pointer;transition:all .15s;color:var(--m)}
+.cat-chip{padding:4px 10px;border-radius:20px;font-size:11.5px;font-weight:500;border:1px solid var(--bd);background:var(--s);cursor:pointer;color:var(--m)}
 .cat-chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-.cat-chip:hover:not(.active){background:var(--s2);color:var(--t)}
-/* Row colors */
-tr.row-short{background:#FFF8F8}tr.row-short:hover td{background:#FFEAEA}
-tr.row-ok{background:#F6FDF8}tr.row-ok:hover td{background:#EDFAF3}
-tr.row-dedup{background:#FFFBF0}tr.row-dedup:hover td{background:#FFF6E0}
-/* PO groups */
+tr.row-short{background:#FFF8F8}tr.row-ok{background:#F6FDF8}tr.row-dedup{background:#FFFBF0}
 .po-group{margin-bottom:14px}
 .po-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--s2);border:1px solid var(--bl);border-radius:8px 8px 0 0;font-weight:600;font-size:13px;flex-wrap:wrap;gap:8px}
 .po-group .twrap{border-top:none;border-radius:0 0 8px 8px}
-/* Empty */
 .empty{text-align:center;padding:36px 20px;color:var(--f);font-size:13px}
 .empty-icon{font-size:28px;margin-bottom:8px}
-/* Loading */
 .load-bar{height:3px;background:var(--bl);border-radius:2px;overflow:hidden;margin-bottom:10px;display:none}
 .load-bar.active{display:block}
 .load-fill{height:100%;background:var(--blue);border-radius:2px;animation:indeterminate 1.5s infinite ease-in-out}
@@ -118,10 +107,10 @@ tr.row-dedup{background:#FFFBF0}tr.row-dedup:hover td{background:#FFF6E0}
     <div class="topbar-logo">📦</div>
     <div>
       <div class="topbar-title">MRP — Material Requirements Planning</div>
-      <div class="topbar-sub">Purchases · PEIPL &amp; CMS · Live from Zoho</div>
+      <div class="topbar-sub" id="org-label">Connecting to Zoho Books...</div>
     </div>
     <div class="topbar-right">
-      <span id="sdk-status" class="badge b-amber">Connecting...</span>
+      <span id="sdk-status" class="badge b-amber">Initialising...</span>
       <span id="run-time" class="badge b-gray" style="display:none"></span>
     </div>
   </div>
@@ -132,12 +121,12 @@ tr.row-dedup{background:#FFFBF0}tr.row-dedup:hover td{background:#FFF6E0}
   </div>
   <div class="main">
 
-    <!-- PANEL 1: SELECT ORDERS -->
+    <!-- PANEL 1 -->
     <div id="panel-select" class="panel active">
       <div class="card">
         <div class="card-title">Filters</div>
         <div class="form-row">
-          <div class="fg"><label>Shipment date from</label><input type="date" id="date-from"></div>
+          <div class="fg"><label>Shipment from</label><input type="date" id="date-from"></div>
           <div class="fg"><label>To</label><input type="date" id="date-to"></div>
           <div class="fg"><label>Org</label>
             <select id="org-filter">
@@ -151,31 +140,30 @@ tr.row-dedup{background:#FFFBF0}tr.row-dedup:hover td{background:#FFF6E0}
           </div>
         </div>
         <div>
-          <label>Category filter</label>
+          <label>Category</label>
           <div class="cat-chips" id="cat-chips">
-            <div class="cat-chip active" data-cat="all" onclick="toggleCat(this)">All Categories</div>
-            <div class="cat-chip" data-cat="FG_DG" onclick="toggleCat(this)">DG Sets</div>
-            <div class="cat-chip" data-cat="FG_FRP" onclick="toggleCat(this)">FRP</div>
-            <div class="cat-chip" data-cat="FG_LT" onclick="toggleCat(this)">LT Panel</div>
-            <div class="cat-chip" data-cat="ACOUSTIC" onclick="toggleCat(this)">Acoustic Enclosures</div>
+            <div class="cat-chip active" data-cat="all" onclick="toggleCat(this)">All</div>
+            <div class="cat-chip" data-cat="DG" onclick="toggleCat(this)">DG Sets</div>
+            <div class="cat-chip" data-cat="FRP" onclick="toggleCat(this)">FRP</div>
+            <div class="cat-chip" data-cat="LT" onclick="toggleCat(this)">LT Panel</div>
+            <div class="cat-chip" data-cat="AE" onclick="toggleCat(this)">Acoustic Enclosures</div>
             <div class="cat-chip" data-cat="CP" onclick="toggleCat(this)">Control Panels</div>
             <div class="cat-chip" data-cat="ENG" onclick="toggleCat(this)">Engines</div>
             <div class="cat-chip" data-cat="ALT" onclick="toggleCat(this)">Alternators</div>
             <div class="cat-chip" data-cat="BAT" onclick="toggleCat(this)">Batteries</div>
-            <div class="cat-chip" data-cat="SPARES" onclick="toggleCat(this)">Spares</div>
-            <div class="cat-chip" data-cat="FAB" onclick="toggleCat(this)">Fabrication</div>
+            <div class="cat-chip" data-cat="SP" onclick="toggleCat(this)">Spares</div>
           </div>
         </div>
         <div class="form-row" style="margin-top:10px">
           <div class="fg" style="flex:1">
-            <label>Search SO# or Customer</label>
-            <input type="text" id="so-search" placeholder="Type to search..." oninput="filterSOList()" style="min-width:220px">
+            <label>Search</label>
+            <input type="text" id="so-search" placeholder="SO# or customer..." oninput="filterSOList()">
           </div>
         </div>
       </div>
 
       <div class="load-bar active" id="so-load-bar"><div class="load-fill"></div></div>
-      <div class="load-msg active" id="so-load-msg">Loading sales orders...</div>
+      <div class="load-msg active" id="so-load-msg">Loading orders from Zoho Books...</div>
 
       <div class="so-list-wrap" id="so-list-wrap" style="display:none">
         <div class="so-list-header">
@@ -185,19 +173,15 @@ tr.row-dedup{background:#FFFBF0}tr.row-dedup:hover td{background:#FFF6E0}
             <span id="selected-count" class="badge b-blue" style="display:none">0 selected</span>
           </div>
           <div style="display:flex;gap:8px">
-            <button class="btn btn-sm" onclick="clearSelection()">Clear</button>
-            <button class="btn btn-sm" onclick="selectFiltered()" style="color:var(--blue);font-weight:600">Select All Filtered</button>
+            <button class="btn btn-sm" onclick="clearSel()">Clear</button>
+            <button class="btn btn-sm" onclick="selFiltered()" style="color:var(--blue);font-weight:600">Select All</button>
           </div>
         </div>
-        <div class="so-list-body" id="so-list-body">
-          <div class="empty"><div class="empty-icon">📋</div>Click "Load Orders" to see pending SOs</div>
-        </div>
+        <div class="so-list-body" id="so-list-body"></div>
       </div>
 
       <div style="display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap">
-        <div style="font-size:12px;color:var(--m)" id="run-hint">
-          Select specific SOs above, or leave unselected to run for <b>all pending SOs</b>
-        </div>
+        <div style="font-size:12px;color:var(--m)" id="run-hint">Leave unselected to run for <b>all pending SOs</b></div>
         <div style="display:flex;gap:8px">
           <button class="btn btn-sm" onclick="exportSOCSV()">⬇ CSV</button>
           <button class="btn btn-p" id="run-btn" onclick="runMRP()">▶ Run MRP</button>
@@ -205,10 +189,10 @@ tr.row-dedup{background:#FFFBF0}tr.row-dedup:hover td{background:#FFF6E0}
       </div>
     </div>
 
-    <!-- PANEL 2: MRP REPORT -->
+    <!-- PANEL 2 -->
     <div id="panel-mrp" class="panel">
       <div class="load-bar" id="mrp-load-bar"><div class="load-fill"></div></div>
-      <div class="load-msg" id="mrp-load-msg">Running MRP analysis...</div>
+      <div class="load-msg" id="mrp-load-msg">Running MRP...</div>
       <div id="mrp-content" style="display:none">
         <div class="metrics">
           <div class="metric"><div class="metric-l">Total Items</div><div class="metric-v" id="mm-total">—</div></div>
@@ -223,23 +207,20 @@ tr.row-dedup{background:#FFFBF0}tr.row-dedup:hover td{background:#FFF6E0}
           <span class="badge b-p3">P3 Normal</span>
           <span class="badge b-p4">P4 Low</span>
           <span class="badge b-p5">P5 Monitor</span>
-          <span style="font-size:11px;color:var(--m);margin-left:4px">Scored on: Coverage + Value + Payment + Lead time + Transit</span>
         </div>
-        <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap">
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <select id="mrp-filter" onchange="filterMRP()" style="min-width:150px">
+        <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;justify-content:space-between">
+          <div style="display:flex;gap:8px">
+            <select id="mrp-filter" onchange="filterMRP()">
               <option value="all">All items</option>
               <option value="short">Shortfall only</option>
               <option value="ok">Fully covered</option>
               <option value="p1">Priority 1</option>
               <option value="p2">Priority 1–2</option>
             </select>
-            <select id="mrp-vendor-filter" onchange="filterMRP()" style="min-width:150px">
-              <option value="all">All vendors</option>
-            </select>
+            <select id="mrp-vendor-filter" onchange="filterMRP()"><option value="all">All vendors</option></select>
           </div>
           <div style="display:flex;gap:8px">
-            <button class="btn btn-sm" onclick="exportMRPCSV()">⬇ Export CSV</button>
+            <button class="btn btn-sm" onclick="exportMRPCSV()">⬇ CSV</button>
             <button class="btn btn-p btn-sm" onclick="showTab('po')">View Draft POs →</button>
           </div>
         </div>
@@ -247,13 +228,11 @@ tr.row-dedup{background:#FFFBF0}tr.row-dedup:hover td{background:#FFF6E0}
       </div>
     </div>
 
-    <!-- PANEL 3: DRAFT POs -->
+    <!-- PANEL 3 -->
     <div id="panel-po" class="panel">
       <div class="load-bar" id="po-load-bar"><div class="load-fill"></div></div>
-      <div class="load-msg" id="po-load-msg">Creating draft purchase orders...</div>
-      <div id="po-content">
-        <div class="empty"><div class="empty-icon">🧾</div>Run MRP first to generate draft POs</div>
-      </div>
+      <div class="load-msg" id="po-load-msg">Creating draft POs...</div>
+      <div id="po-content"><div class="empty"><div class="empty-icon">🧾</div>Run MRP first</div></div>
     </div>
 
   </div>
@@ -261,69 +240,123 @@ tr.row-dedup{background:#FFFBF0}tr.row-dedup:hover td{background:#FFF6E0}
 <div class="toast" id="toast"></div>
 
 <script>
-const SKIP_ST = ['invoiced','void','draft','fulfilled','closed','manually_fulfilled'];
+// ═══════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════
+const PEIPL_ORG = '60007240790';
+const CMS_ORG   = '60021483783';
+const API_BASE  = 'https://www.zohoapis.in';
+const SKIP_ST   = ['invoiced','void','draft','fulfilled','closed','manually_fulfilled'];
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let App         = null;
+let ALL_SOS     = [], FILTERED_SOS = [], SEL = new Set(), MRP_DATA = null;
 const ACTIVE_CATS = new Set(['all']);
-let ALL_SOS = [], FILTERED_SOS = [], SELECTED_IDS = new Set(), MRP_DATA = null;
 
-// SDK Init
-ZOHO.embeddedApp.on('PageLoad', function() {
-  document.getElementById('sdk-status').className = 'badge b-green';
-  document.getElementById('sdk-status').textContent = 'Connected';
-  setDates(); loadSOList();
-});
-ZOHO.embeddedApp.init();
+// ═══════════════════════════════════════════════
+// SDK INIT — Zoho Books Widget SDK (ZFAPPS)
+// ═══════════════════════════════════════════════
+window.onload = function() {
+  setDates();
+  ZFAPPS.extension.init().then(function(app) {
+    App = app;
+    document.getElementById('sdk-status').className = 'badge b-green';
+    document.getElementById('sdk-status').textContent = 'Connected';
 
-function setDates() {
-  const t = new Date(), t2 = new Date();
-  t2.setDate(t.getDate()+60);
-  document.getElementById('date-from').value = t.toISOString().split('T')[0];
-  document.getElementById('date-to').value   = t2.toISOString().split('T')[0];
+    // Get org info
+    ZFAPPS.get('organization').then(function(data) {
+      const org = data?.organization || data;
+      if (org?.name) {
+        document.getElementById('org-label').textContent = 'Live · ' + org.name + ' · PEIPL & CMS';
+      }
+    }).catch(()=>{});
+
+    // Auto-load SOs
+    loadSOList();
+  }).catch(function(err) {
+    document.getElementById('sdk-status').className = 'badge b-red';
+    document.getElementById('sdk-status').textContent = 'SDK Error';
+    document.getElementById('so-load-msg').textContent = 'SDK init failed: ' + (err?.message || err);
+    console.error('ZFAPPS init error:', err);
+  });
+};
+
+// ═══════════════════════════════════════════════
+// API HELPER — uses ZFAPPS.request with connections
+// ═══════════════════════════════════════════════
+async function zRequest(url, method, connection, body) {
+  const opts = {
+    url: url,
+    method: method || 'GET',
+    connection_link_name: connection,
+  };
+  if (body) {
+    opts.body = { mode: 'raw', raw: JSON.stringify(body) };
+    opts.header = [{ key: 'Content-Type', value: 'application/json' }];
+  }
+  const resp = await ZFAPPS.request(opts);
+  const data = JSON.parse(resp.data.body);
+  return data;
 }
 
-// ── Load SOs ──
+function getConn(orgId) {
+  return orgId === PEIPL_ORG ? 'zoho_books_peipl' : 'zoho_books_cms';
+}
+function getInvConn(orgId) {
+  return orgId === PEIPL_ORG ? 'zoho_inventory_peipl' : 'zoho_inventory_cms';
+}
+
+// ═══════════════════════════════════════════════
+// LOAD SOs
+// ═══════════════════════════════════════════════
 async function loadSOList() {
-  showLoad('so','Loading pending sales orders...');
+  showLoad('so', 'Loading pending sales orders...');
   document.getElementById('so-list-wrap').style.display = 'none';
   ALL_SOS = [];
+
   try {
-    const df = document.getElementById('date-from').value;
-    const dt = document.getElementById('date-to').value;
-    const of = document.getElementById('org-filter').value;
+    const df  = document.getElementById('date-from').value;
+    const dt  = document.getElementById('date-to').value;
+    const of  = document.getElementById('org-filter').value;
     const orgs = [];
-    if(of !== 'cms')   orgs.push({id:'60007240790',name:'PEIPL'});
-    if(of !== 'peipl') orgs.push({id:'60021483783',name:'CMS'});
-    const statuses = ['open','approved'];
-    for(const org of orgs) {
-      for(const status of statuses) {
+    if (of !== 'cms')   orgs.push({id: PEIPL_ORG, name: 'PEIPL'});
+    if (of !== 'peipl') orgs.push({id: CMS_ORG,   name: 'CMS'});
+
+    for (const org of orgs) {
+      for (const status of ['open', 'approved']) {
         let page = 1;
-        while(page <= 20) {
-          const resp = await ZOHO.BOOKS.API.invokeWorkflow('getSalesOrderList',{
-            org_id: org.id, org_name: org.name,
-            status, date_from: df, date_to: dt, page
-          });
-          const sos = resp?.salesorders || [];
-          if(!sos.length) break;
-          for(const so of sos) {
-            const st = (so.status||'').toLowerCase();
-            if(SKIP_ST.includes(st)) continue;
-            const sd = so.shipment_date||'';
-            if(sd && df && dt && (sd<df||sd>dt)) continue;
+        while (page <= 20) {
+          const data = await zRequest(
+            `${API_BASE}/books/v3/salesorders?organization_id=${org.id}&status=${status}&per_page=200&page=${page}`,
+            'GET', getConn(org.id)
+          );
+          const sos = data?.salesorders || [];
+          if (!sos.length) break;
+
+          for (const so of sos) {
+            const st = (so.status || '').toLowerCase();
+            if (SKIP_ST.includes(st)) continue;
+            const sd = so.shipment_date || '';
+            if (sd && df && dt && (sd < df || sd > dt)) continue;
             ALL_SOS.push({
-              id: so.salesorder_id,
-              num: so.salesorder_number||so.salesorder_id,
-              customer: so.customer_name||'',
-              date: so.date||'',
-              ship_date: so.shipment_date||'',
-              status: so.status||'',
-              amount: so.total||0,
+              id:       so.salesorder_id,
+              num:      so.salesorder_number || so.salesorder_id,
+              customer: so.customer_name || '',
+              date:     so.date || '',
+              ship_date: so.shipment_date || '',
+              status:   so.status || '',
+              amount:   so.total || 0,
               org: org.name, org_id: org.id
             });
           }
-          if(!resp?.page_context?.has_more_page) break;
+          if (!data?.page_context?.has_more_page) break;
           page++;
         }
       }
     }
+
     // Dedup
     const seen = new Set();
     ALL_SOS = ALL_SOS.filter(s => seen.has(s.id) ? false : seen.add(s.id));
@@ -334,7 +367,7 @@ async function loadSOList() {
   } catch(err) {
     hideLoad('so');
     document.getElementById('so-list-wrap').style.display = 'block';
-    document.getElementById('so-list-body').innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div>Could not load SOs automatically. You can still run MRP for all pending orders.</div><div style="margin-top:6px;font-size:11px;color:var(--f)">${err.message||'SDK initialising'}</div></div>`;
+    document.getElementById('so-list-body').innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div>${err.message || 'Could not load SOs'}</div></div>`;
     console.error(err);
   }
 }
@@ -343,29 +376,23 @@ function renderSOList() {
   const wrap = document.getElementById('so-list-wrap');
   const body = document.getElementById('so-list-body');
   wrap.style.display = 'block';
-  if(!FILTERED_SOS.length) {
-    body.innerHTML = '<div class="empty"><div class="empty-icon">✅</div>No pending SOs match your filters.</div>';
-    document.getElementById('so-count-label').textContent = '0 orders';
-    return;
-  }
   document.getElementById('so-count-label').textContent = FILTERED_SOS.length + ' orders';
   updateSelCount();
+  if (!FILTERED_SOS.length) { body.innerHTML = '<div class="empty"><div class="empty-icon">✅</div>No pending SOs match filters.</div>'; return; }
   let h = '';
-  for(const so of FILTERED_SOS) {
-    const chk = SELECTED_IDS.has(so.id) ? 'checked' : '';
-    const sel = SELECTED_IDS.has(so.id) ? 'selected' : '';
-    const ob  = so.org==='PEIPL'
-      ? '<span class="badge b-blue" style="font-size:10px">PEIPL</span>'
-      : '<span class="badge b-teal" style="font-size:10px">CMS</span>';
-    const sb  = getStBadge(so.status);
+  for (const so of FILTERED_SOS) {
+    const sel = SEL.has(so.id);
+    const ob  = so.org === 'PEIPL' ? '<span class="badge b-blue" style="font-size:10px">PEIPL</span>' : '<span class="badge b-teal" style="font-size:10px">CMS</span>';
+    const stm = {open:'b-blue',approved:'b-green',confirmed:'b-green',overdue:'b-red',partially_invoiced:'b-amber',backorder:'b-red'};
+    const sb  = `<span class="badge ${stm[(so.status||'').toLowerCase()]||'b-gray'}" style="font-size:10px">${so.status}</span>`;
     const amt = so.amount ? '₹'+Number(so.amount).toLocaleString('en-IN') : '';
-    h += `<div class="so-row ${sel}" onclick="toggleSORow('${so.id}',event)">
-      <input type="checkbox" ${chk} onclick="event.stopPropagation();toggleSO('${so.id}',this.checked)">
+    h += `<div class="so-row ${sel?'selected':''}" onclick="toggleSORow('${so.id}',event)">
+      <input type="checkbox" ${sel?'checked':''} onclick="event.stopPropagation();toggleSO('${so.id}',this.checked)">
       <div class="so-row-num">${so.num}</div>
       <div class="so-row-cust">${so.customer}</div>
       <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
         ${ob}${sb}
-        <span style="font-size:11.5px;color:var(--f);white-space:nowrap">${so.ship_date||so.date}</span>
+        <span style="font-size:11px;color:var(--f)">${so.ship_date||so.date}</span>
         ${amt?`<span style="font-size:12px;font-weight:600">${amt}</span>`:''}
       </div>
     </div>`;
@@ -373,148 +400,144 @@ function renderSOList() {
   body.innerHTML = h;
 }
 
-function getStBadge(st) {
-  const m = {open:'b-blue',approved:'b-green',confirmed:'b-green',overdue:'b-red',partially_invoiced:'b-amber',backorder:'b-red',for_packaging:'b-teal',to_be_shipped:'b-teal'};
-  return `<span class="badge ${m[(st||'').toLowerCase()]||'b-gray'}" style="font-size:10px">${st||''}</span>`;
-}
-
-// ── Category filter ──
 function toggleCat(chip) {
   const cat = chip.dataset.cat;
-  if(cat==='all') {
+  if (cat==='all') {
     ACTIVE_CATS.clear(); ACTIVE_CATS.add('all');
     document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));
     chip.classList.add('active');
   } else {
     ACTIVE_CATS.delete('all');
     document.querySelector('[data-cat="all"]').classList.remove('active');
-    ACTIVE_CATS.has(cat) ? (ACTIVE_CATS.delete(cat), chip.classList.remove('active'))
-                         : (ACTIVE_CATS.add(cat), chip.classList.add('active'));
-    if(!ACTIVE_CATS.size) { ACTIVE_CATS.add('all'); document.querySelector('[data-cat="all"]').classList.add('active'); }
+    ACTIVE_CATS.has(cat) ? (ACTIVE_CATS.delete(cat),chip.classList.remove('active')) : (ACTIVE_CATS.add(cat),chip.classList.add('active'));
+    if (!ACTIVE_CATS.size) { ACTIVE_CATS.add('all'); document.querySelector('[data-cat="all"]').classList.add('active'); }
   }
   filterSOList();
 }
 
 function filterSOList() {
   const s = document.getElementById('so-search').value.toLowerCase();
-  FILTERED_SOS = ALL_SOS.filter(so =>
-    !s || so.num.toLowerCase().includes(s) || so.customer.toLowerCase().includes(s)
-  );
+  FILTERED_SOS = ALL_SOS.filter(so => !s || so.num.toLowerCase().includes(s) || so.customer.toLowerCase().includes(s));
   renderSOList();
 }
 
-// ── Selection ──
-function toggleSO(id, chk) {
-  chk ? SELECTED_IDS.add(id) : SELECTED_IDS.delete(id);
-  updateSelCount();
-}
+function toggleSO(id, chk) { chk ? SEL.add(id) : SEL.delete(id); updateSelCount(); }
 function toggleSORow(id, e) {
-  if(e.target.type==='checkbox') return;
-  const sel = SELECTED_IDS.has(id);
-  sel ? SELECTED_IDS.delete(id) : SELECTED_IDS.add(id);
-  e.currentTarget.classList.toggle('selected',!sel);
+  if (e.target.type==='checkbox') return;
+  SEL.has(id) ? SEL.delete(id) : SEL.add(id);
+  e.currentTarget.classList.toggle('selected', SEL.has(id));
   const cb = e.currentTarget.querySelector('input[type=checkbox]');
-  if(cb) cb.checked = !sel;
+  if (cb) cb.checked = SEL.has(id);
   updateSelCount();
 }
-function toggleSelectAll(cb) {
-  cb.checked ? FILTERED_SOS.forEach(s=>SELECTED_IDS.add(s.id)) : FILTERED_SOS.forEach(s=>SELECTED_IDS.delete(s.id));
-  renderSOList(); updateSelCount();
-}
-function clearSelection() { SELECTED_IDS.clear(); document.getElementById('select-all').checked=false; renderSOList(); updateSelCount(); }
-function selectFiltered() { FILTERED_SOS.forEach(s=>SELECTED_IDS.add(s.id)); renderSOList(); updateSelCount(); }
+function toggleSelectAll(cb) { cb.checked ? FILTERED_SOS.forEach(s=>SEL.add(s.id)) : FILTERED_SOS.forEach(s=>SEL.delete(s.id)); renderSOList(); updateSelCount(); }
+function clearSel() { SEL.clear(); document.getElementById('select-all').checked=false; renderSOList(); updateSelCount(); }
+function selFiltered() { FILTERED_SOS.forEach(s=>SEL.add(s.id)); renderSOList(); updateSelCount(); }
 function updateSelCount() {
   const el = document.getElementById('selected-count');
-  SELECTED_IDS.size ? (el.style.display='inline-flex', el.textContent=SELECTED_IDS.size+' selected') : (el.style.display='none');
-  document.getElementById('run-hint').innerHTML = SELECTED_IDS.size
-    ? `<b>${SELECTED_IDS.size} SOs selected</b> — MRP will run for these orders only`
-    : `Select specific SOs above, or leave unselected to run for <b>all pending SOs</b>`;
+  SEL.size ? (el.style.display='inline-flex',el.textContent=SEL.size+' selected') : (el.style.display='none');
+  document.getElementById('run-hint').innerHTML = SEL.size
+    ? `<b>${SEL.size} SOs selected</b> — MRP runs for these only`
+    : `Leave unselected to run for <b>all pending SOs</b>`;
 }
 
-// ── Run MRP ──
+// ═══════════════════════════════════════════════
+// RUN MRP — calls runMRP Deluge function via API
+// ═══════════════════════════════════════════════
 async function runMRP() {
   const btn = document.getElementById('run-btn');
-  btn.disabled=true; btn.textContent='Running...';
+  btn.disabled = true; btn.textContent = 'Running...';
   showTab('mrp');
-  showLoad('mrp','Running MRP — fetching SOs, exploding BOMs, checking stock...');
-  document.getElementById('mrp-content').style.display='none';
+  showLoad('mrp', 'Running MRP — fetching SOs, exploding BOMs, checking stock...');
+  document.getElementById('mrp-content').style.display = 'none';
+
   try {
-    const soIds = SELECTED_IDS.size > 0 ? [...SELECTED_IDS].join(',') : '';
-    const result = await ZOHO.BOOKS.API.invokeWorkflow('runMRP',{
-      cf_so_ids: soIds,
-      date_from: document.getElementById('date-from').value,
-      date_to:   document.getElementById('date-to').value,
-    });
-    MRP_DATA = result;
-    renderMRPReport(result);
-    renderPOs(result);
+    const soIds = SEL.size > 0 ? [...SEL].join(',') : '';
+    const df    = document.getElementById('date-from').value;
+    const dt    = document.getElementById('date-to').value;
+
+    // Call runMRP Deluge custom function via Zoho Books API
+    // Custom functions are called via /books/v3/customfunctions/execute
+    const payload = {
+      function_name: 'runMRP',
+      arguments: JSON.stringify({
+        cf_so_ids:  soIds,
+        date_from:  df,
+        date_to:    dt,
+      })
+    };
+
+    // Try CMS org first (where function is deployed)
+    const result = await zRequest(
+      `${API_BASE}/books/v3/customfunctions/execute?organization_id=${CMS_ORG}`,
+      'POST', 'zoho_books_cms', payload
+    );
+
+    const data = result?.response?.result || result?.result || result;
+    MRP_DATA = data;
+    renderMRPReport(data);
+    renderPOs(data);
     hideLoad('mrp');
-    document.getElementById('mrp-content').style.display='block';
-    document.getElementById('run-time').style.display='inline-flex';
-    document.getElementById('run-time').textContent='Last run: '+new Date().toLocaleTimeString('en-IN');
-    toast('MRP complete: '+(result.short_items||0)+' shortfall, '+(result.pos_created?.length||0)+' POs created');
+    document.getElementById('mrp-content').style.display = 'block';
+    document.getElementById('run-time').style.display = 'inline-flex';
+    document.getElementById('run-time').textContent = 'Last run: ' + new Date().toLocaleTimeString('en-IN');
+    toast('MRP complete: ' + (data?.short_items||0) + ' shortfall, ' + (data?.pos_created?.length||0) + ' POs created');
   } catch(err) {
     hideLoad('mrp');
-    document.getElementById('mrp-content').style.display='block';
-    document.getElementById('mrp-table').innerHTML=`<div class="empty" style="color:var(--red)"><div class="empty-icon">❌</div>${err.message}</div>`;
+    document.getElementById('mrp-content').style.display = 'block';
+    document.getElementById('mrp-table').innerHTML = `<div class="empty" style="color:var(--red)"><div class="empty-icon">❌</div>${err.message}</div>`;
     console.error(err);
-    toast('Error: '+err.message, true);
+    toast('Error: ' + err.message, true);
   }
-  btn.disabled=false; btn.textContent='▶ Run MRP';
+  btn.disabled = false; btn.textContent = '▶ Run MRP';
 }
 
-// ── Render MRP table ──
+// ═══════════════════════════════════════════════
+// RENDER MRP
+// ═══════════════════════════════════════════════
 function renderMRPReport(data) {
-  const lines = data.mrp_lines||[];
-  document.getElementById('mm-total').textContent  = lines.length;
-  document.getElementById('mm-short').textContent  = data.short_items||0;
-  document.getElementById('mm-ok').textContent     = data.covered_items||0;
-  document.getElementById('mm-dedup').textContent  = data.skipped_dedup||0;
-  const val = data.total_po_value||0;
-  document.getElementById('mm-val').textContent = val>0 ? '₹'+Math.round(val).toLocaleString('en-IN') : '₹0';
+  const lines = data?.mrp_lines || [];
+  document.getElementById('mm-total').textContent = lines.length;
+  document.getElementById('mm-short').textContent = data?.short_items || 0;
+  document.getElementById('mm-ok').textContent    = data?.covered_items || 0;
+  document.getElementById('mm-dedup').textContent  = data?.skipped_dedup || 0;
+  const val = data?.total_po_value || 0;
+  document.getElementById('mm-val').textContent = val > 0 ? '₹'+Math.round(val).toLocaleString('en-IN') : '₹0';
   const vSel = document.getElementById('mrp-vendor-filter');
   vSel.innerHTML = '<option value="all">All vendors</option>';
-  const vendors = [...new Set(lines.map(l=>l.vendor_name||'Unknown').filter(Boolean))].sort();
-  vendors.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; vSel.appendChild(o); });
+  [...new Set(lines.map(l=>l.vendor_name||'Unknown').filter(Boolean))].sort().forEach(v=>{
+    const o = document.createElement('option'); o.value=v; o.textContent=v; vSel.appendChild(o);
+  });
   renderMRPTable(lines);
 }
 
 function renderMRPTable(lines) {
-  if(!lines.length) { document.getElementById('mrp-table').innerHTML='<div class="empty"><div class="empty-icon">✅</div>No items to display.</div>'; return; }
+  if (!lines.length) { document.getElementById('mrp-table').innerHTML='<div class="empty"><div class="empty-icon">✅</div>No items to display.</div>'; return; }
   const pc = ['','b-p1','b-p2','b-p3','b-p4','b-p5'];
-  let h = `<table><thead><tr>
-    <th>P#</th><th>SKU</th><th>Description</th>
-    <th class="num">Reqd</th><th class="num">Stock</th><th>Cov%</th>
-    <th class="num">Bal</th><th class="num">Pend PO</th><th class="num">To Buy</th>
-    <th>Vendor</th><th>Org</th><th class="num">Rate</th><th>Note</th>
-  </tr></thead><tbody>`;
-  for(const m of lines) {
+  let h = `<table><thead><tr><th>P#</th><th>SKU</th><th>Description</th><th class="num">Reqd</th><th class="num">Stock</th><th>Cov%</th><th class="num">Bal</th><th class="num">Pend PO</th><th class="num">To Buy</th><th>Vendor</th><th>Org</th><th class="num">Rate</th><th>Note</th></tr></thead><tbody>`;
+  for (const m of lines) {
     const cp=m.coverage_pct||0, tp=m.to_purchase||0, p=m.priority||3;
     const fc=cp>=100?'pf-g':cp>=50?'pf-a':'pf-r';
     const rc=m.has_draft_po?'row-dedup':tp>0?'row-short':'row-ok';
-    const note=m.has_draft_po?'<span class="badge b-amber" style="font-size:10px">Draft exists</span>':'—';
     const ob=m.po_org_name==='PEIPL'?'b-blue':'b-teal';
-    h+=`<tr class="${rc}">
-      <td><span class="badge ${pc[p]}">P${p}</span></td>
-      <td class="mono">${m.sku||''}</td>
-      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${m.desc}">${m.desc}</td>
-      <td class="num">${m.qty_reqd}</td>
-      <td class="num">${m.avail_stock}</td>
-      <td style="min-width:80px"><div style="display:flex;align-items:center;gap:5px"><div class="pbar"><div class="pfill ${fc}" style="width:${Math.min(cp,100)}%"></div></div><span style="font-size:11px;color:var(--m)">${cp}%</span></div></td>
-      <td class="num ${(m.bal_reqd||0)>0?'neg':''}">${m.bal_reqd||'—'}</td>
-      <td class="num">${m.pending_po||'—'}</td>
-      <td class="num ${tp>0&&!m.has_draft_po?'neg':'pos'}" style="${tp>0?'font-weight:700':''}">${tp>0?tp:'—'}</td>
-      <td style="font-size:12px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.vendor_name||'—'}</td>
-      <td><span class="badge ${ob}" style="font-size:10px">${m.po_org_name||'CMS'}</span></td>
-      <td class="num" style="font-size:12px">${m.unit_cost?'₹'+Number(m.unit_cost).toLocaleString('en-IN'):'—'}</td>
-      <td>${note}</td>
-    </tr>`;
+    h+=`<tr class="${rc}"><td><span class="badge ${pc[p]}">P${p}</span></td>
+    <td class="mono">${m.sku||''}</td>
+    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${m.desc}">${m.desc}</td>
+    <td class="num">${m.qty_reqd}</td><td class="num">${m.avail_stock}</td>
+    <td style="min-width:80px"><div style="display:flex;align-items:center;gap:5px"><div class="pbar"><div class="pfill ${fc}" style="width:${Math.min(cp,100)}%"></div></div><span style="font-size:11px;color:var(--m)">${cp}%</span></div></td>
+    <td class="num ${(m.bal_reqd||0)>0?'neg':''}">${m.bal_reqd||'—'}</td>
+    <td class="num">${m.pending_po||'—'}</td>
+    <td class="num ${tp>0&&!m.has_draft_po?'neg':'pos'}" style="${tp>0?'font-weight:700':''}">${tp>0?tp:'—'}</td>
+    <td style="font-size:12px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.vendor_name||'—'}</td>
+    <td><span class="badge ${ob}" style="font-size:10px">${m.po_org_name||'CMS'}</span></td>
+    <td class="num" style="font-size:12px">${m.unit_cost?'₹'+Number(m.unit_cost).toLocaleString('en-IN'):'—'}</td>
+    <td>${m.has_draft_po?'<span class="badge b-amber" style="font-size:10px">Draft exists</span>':'—'}</td></tr>`;
   }
-  document.getElementById('mrp-table').innerHTML = h+'</tbody></table>';
+  document.getElementById('mrp-table').innerHTML = h + '</tbody></table>';
 }
 
 function filterMRP() {
-  if(!MRP_DATA) return;
+  if (!MRP_DATA) return;
   const f=document.getElementById('mrp-filter').value;
   const vf=document.getElementById('mrp-vendor-filter').value;
   let lines=MRP_DATA.mrp_lines||[];
@@ -526,40 +549,40 @@ function filterMRP() {
   renderMRPTable(lines);
 }
 
-// ── Render POs ──
+// ═══════════════════════════════════════════════
+// RENDER POs
+// ═══════════════════════════════════════════════
 function renderPOs(data) {
-  const cont=document.getElementById('po-content');
-  const created=data.pos_created||[], failed=data.pos_failed||[];
-  if(!created.length&&!failed.length) {
-    cont.innerHTML='<div class="empty"><div class="empty-icon">✅</div>No new POs needed — all shortfall items already have draft POs.</div>';
+  const cont = document.getElementById('po-content');
+  const created = data?.pos_created||[], failed = data?.pos_failed||[];
+  if (!created.length && !failed.length) {
+    cont.innerHTML = '<div class="empty"><div class="empty-icon">✅</div>No new POs needed.</div>';
     return;
   }
-  let h='';
-  if(created.length) {
-    h+=`<div class="card"><div class="card-title">✅ ${created.length} Draft PO${created.length>1?'s':''} Created</div>
+  let h = '';
+  if (created.length) {
+    h += `<div class="card"><div class="card-title">✅ ${created.length} Draft PO${created.length>1?'s':''} Created</div>
     <div class="twrap"><table><thead><tr><th>PO Number</th><th>Vendor</th><th>Org</th><th class="num">Items</th></tr></thead><tbody>`;
-    for(const po of created) {
+    created.forEach(po=>{
       h+=`<tr><td style="font-weight:600;color:var(--blue)">${po.po_number}</td><td>${po.vendor_name}</td>
       <td><span class="badge ${po.org==='PEIPL'?'b-blue':'b-teal'}">${po.org}</span></td>
       <td class="num">${po.items_count}</td></tr>`;
-    }
-    h+='</tbody></table></div></div>';
+    });
+    h += '</tbody></table></div></div>';
   }
-  if(failed.length) {
-    h+=`<div class="card"><div class="card-title" style="color:var(--red)">❌ ${failed.length} PO${failed.length>1?'s':''} Failed</div>`;
-    failed.forEach(f=>{ h+=`<div style="font-size:13px;color:var(--red);padding:4px 0;border-bottom:1px solid var(--bl)">${f}</div>`; });
-    h+='</div>';
+  if (failed.length) {
+    h += `<div class="card"><div class="card-title" style="color:var(--red)">❌ ${failed.length} Failed</div>`;
+    failed.forEach(f=>{ h+=`<div style="font-size:13px;color:var(--red);padding:4px 0">${f}</div>`; });
+    h += '</div>';
   }
-  // Group items by vendor for review
-  const lines=(MRP_DATA?.mrp_lines||[]).filter(l=>(l.to_purchase||0)>0&&!l.has_draft_po);
-  if(lines.length) {
-    const vendors={};
-    lines.forEach(l=>{ const v=l.vendor_name||'Unknown Vendor'; (vendors[v]=vendors[v]||[]).push(l); });
-    h+='<div style="margin-top:4px;font-size:11px;color:var(--m);margin-bottom:8px">PO line items for review:</div>';
-    for(const [vendor,items] of Object.entries(vendors)) {
+  const lines = (MRP_DATA?.mrp_lines||[]).filter(l=>(l.to_purchase||0)>0&&!l.has_draft_po);
+  if (lines.length) {
+    const vendors = {};
+    lines.forEach(l=>{ const v=l.vendor_name||'Unknown'; (vendors[v]=vendors[v]||[]).push(l); });
+    const pc=['','b-p1','b-p2','b-p3','b-p4','b-p5'];
+    for (const [vendor, items] of Object.entries(vendors)) {
       const total=items.reduce((a,b)=>a+(b.to_purchase||0)*(b.unit_cost||0),0);
       const orgN=items[0]?.po_org_name||'CMS';
-      const pc=['','b-p1','b-p2','b-p3','b-p4','b-p5'];
       h+=`<div class="po-group"><div class="po-head">
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <span>🏭</span><span>${vendor}</span>
@@ -582,10 +605,12 @@ function renderPOs(data) {
       h+='</tbody></table></div></div>';
     }
   }
-  cont.innerHTML=h;
+  cont.innerHTML = h;
 }
 
-// ── CSV Exports ──
+// ═══════════════════════════════════════════════
+// EXPORTS + UI HELPERS
+// ═══════════════════════════════════════════════
 function exportSOCSV() {
   let c='SO#,Customer,Org,Ship Date,Status\n';
   FILTERED_SOS.forEach(s=>c+=`"${s.num}","${s.customer}","${s.org}","${s.ship_date}","${s.status}"\n`);
@@ -600,25 +625,11 @@ function exportMRPCSV() {
   dl(c,'mrp_report.csv');
 }
 function dl(csv,fn) { const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download=fn; a.click(); }
-
-// ── UI ──
-function showTab(n) {
-  ['select','mrp','po'].forEach(t=>{ document.getElementById('tab-'+t).classList.toggle('active',t===n); document.getElementById('panel-'+t).classList.toggle('active',t===n); });
-}
-function showLoad(id,msg) {
-  document.getElementById(id+'-load-bar').classList.add('active');
-  const m=document.getElementById(id+'-load-msg'); if(m){m.textContent=msg;m.classList.add('active');}
-}
-function hideLoad(id) {
-  document.getElementById(id+'-load-bar').classList.remove('active');
-  const m=document.getElementById(id+'-load-msg'); if(m) m.classList.remove('active');
-}
-function toast(msg,isErr=false) {
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.style.background=isErr?'var(--red)':'var(--t)';
-  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3500);
-}
-setDates();
+function showTab(n) { ['select','mrp','po'].forEach(t=>{ document.getElementById('tab-'+t).classList.toggle('active',t===n); document.getElementById('panel-'+t).classList.toggle('active',t===n); }); }
+function showLoad(id,msg) { document.getElementById(id+'-load-bar').classList.add('active'); const m=document.getElementById(id+'-load-msg'); if(m){m.textContent=msg;m.classList.add('active');} }
+function hideLoad(id) { document.getElementById(id+'-load-bar').classList.remove('active'); const m=document.getElementById(id+'-load-msg'); if(m) m.classList.remove('active'); }
+function toast(msg,isErr=false) { const t=document.getElementById('toast'); t.textContent=msg; t.style.background=isErr?'var(--red)':'var(--t)'; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3500); }
+function setDates() { const t=new Date(),t2=new Date(); t2.setDate(t.getDate()+60); document.getElementById('date-from').value=t.toISOString().split('T')[0]; document.getElementById('date-to').value=t2.toISOString().split('T')[0]; }
 </script>
 </body>
 </html>
