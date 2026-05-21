@@ -306,6 +306,9 @@ window.onload = async function() {
 // ═══════════════════════════════════════════════
 // API HELPER — direct fetch with OAuth token
 // ═══════════════════════════════════════════════
+function getConn(orgId) { return orgId === PEIPL_ORG ? 'zoho_books_peipl' : 'zoho_books_cms'; }
+function getInvConn(orgId) { return orgId === PEIPL_ORG ? 'zoho_inventory_peipl' : 'zoho_inventory_cms'; }
+
 async function zRequest(url, method, _conn, body) {
   const token = await getToken();
   const opts = {
