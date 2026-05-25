@@ -265,13 +265,7 @@ const ACTIVE_CATS = new Set(['all']);
 let ALL_SOS = [], FILTERED_SOS = [], SELECTED_IDS = new Set(), MRP_DATA = null;
 
 // ── OAuth Config — update client_secret after regenerating at api-console.zoho.in ──
-const OAUTH = {
-  client_id:     '1000.RA2JJK3BDSWXDAUT7TC5QBG35NMS1W',
-  client_secret: 'f9512da1e4ae7c1d6bbe0fde6f317ed31c4b50257b',
-  refresh_token: '1000.f49d4e80994ed35836787bca22bbc25e.301a7e7bf7990c3e4e28dca4aaad9255',
-  token_url:     'https://accounts.zoho.in/oauth/v2/token',
-  api_base:      'https://www.zohoapis.in/books/v3',
-};
+
 let _accessToken = null, _tokenExp = 0;
 
 async function getToken() {
